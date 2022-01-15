@@ -2,7 +2,7 @@
     <tr><th>Id</th><th>Name</th><th>Email</th></tr>
     <tr *ngFor="let user of users">
       <td>{{user.id}}</td>
-      <td>{{user.name}}</td>
+      <td><a routerLink="/users/{{user.id}}/edit">{{user.name}}</a></td>
       <td>{{user.email}}</td>
     </tr>
   </table>
