@@ -21,7 +21,7 @@ export class UserEditComponent implements OnInit {
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     let targetUser = this.service.getUser(id);
-    if(targetUser==undefined){
+    if (targetUser == undefined) {
       throw new Error('エラー発生！');
     }
   }
