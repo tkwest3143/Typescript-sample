@@ -21,7 +21,6 @@
       "@types/mysql": "^2.15.20",
       "express": "^4.17.2",
       "mysql": "^2.14.1",
-      "promise-mysql": "^5.1.0",
       "reflect-metadata": "^0.1.10",
       "typeorm": "0.2.41"
    }
