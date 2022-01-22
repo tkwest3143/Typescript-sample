@@ -30,7 +30,10 @@ export class UserEditComponent implements OnInit {
     let user = {
       id: form.id,
       name: form.name,
-      email: form.email
+      email: form.email,
+      firstName:"",
+      lastName:"",
+      birthDate: new Date()
     };
     this.service.setUser(user);
     this.router.navigate(["/users"]);
