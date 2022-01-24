@@ -18,12 +18,19 @@ export class UserEditComponent implements OnInit {
     private service: UserService
   ) { }
 
+  
+
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     let targetUser = this.service.getUser(id);
     if (targetUser == undefined) {
-      throw new Error('エラー発生！');
+      throw new Error('not found userid:1');
     }
+    this.service.getUsers().subscribe(res => {
+      this.service.getUser(id).subscribe(res => {
+        this.user = res;
+      });
+    });
   }
 
   onSubmit(form: any): void {
