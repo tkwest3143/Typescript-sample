@@ -28,18 +28,25 @@ createConnection().then(async connection => {
     app.get('/users', async (req: express.Request, res: express.Response) => {
 
         const users = await userRepository.find();
+        console.log(users)
         res.send(users)
     });
-
+    app.post('/users', async function(req, res) {
+        console.log("post /users")
+        res.end();
+      });
     //ユーザ取得
-    app.get('/users/:id/edit', async (req: express.Request, res: express.Response) => {
+    app.get('/users/:id', async (req: express.Request, res: express.Response) => {
+        console.log("results")
         const results = await userRepository.findOne(req.params.id);
+        console.log(results)
         return res.send(results);
     });
 
     //edit user
     app.post('/users/:id', async (req: express.Request, res: express.Response) => {
         const results = await userRepository.findOne(req.params.id);
+        console.log(results)
         return res.send(results);
     });
 });
