@@ -6,10 +6,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent implements OnInit {
+  viewMenu:boolean=false;
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  isViewMenu(){
+    this.viewMenu=!this.viewMenu;
+    return this.viewMenu;
   }
 
 }

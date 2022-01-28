@@ -1,22 +1,29 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, CreateDateColumn, UpdateDateColumn, ManyToOne } from "typeorm";
+import { Room } from "./Room";
 import { User } from "./User";
 
 @Entity()
 export class Chat extends BaseEntity {
 
     @PrimaryGeneratedColumn()
-    id: number;
+    readonly id: number;
 
     @Column()
     comment: string;
 
     @ManyToOne(()=>User,user=>user.chats)
-    user:User;
+    contributor:User;
+
+    @ManyToOne(()=>Room,room=>room.chats)
+    room:User;
+
+    @Column({default: null})
+    deletedAt:Date;
 
     @CreateDateColumn()
-    readonly createdAt: string;
+    readonly createdAt: Date;
 
     @UpdateDateColumn()
-    readonly updatedAt: string;
+    readonly updatedAt: Date;
 
 }
