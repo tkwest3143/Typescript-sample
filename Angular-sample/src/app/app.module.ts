@@ -11,6 +11,8 @@ import { UserListComponent } from './user/user-list/user-list.component';
 import { UserEditComponent } from './user/user-edit/user-edit.component';
 
 import { UserService } from './user/user.service';
+import { ChatComponent } from './chat/chat.component';
+import { ChatService } from './chat/chat.service';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,8 @@ import { UserService } from './user/user.service';
     HeaderComponent,
     MenuComponent,
     UserListComponent,
-    UserEditComponent
+    UserEditComponent,
+    ChatComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +29,7 @@ import { UserService } from './user/user.service';
     HttpClientModule,
     FormsModule
   ],
-  providers: [UserService],
+  providers: [UserService,ChatService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

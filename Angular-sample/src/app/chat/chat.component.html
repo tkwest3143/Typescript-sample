@@ -1,0 +1,46 @@
+<h3 class="title">CHATS</h3>
+
+<div class="chat">
+    <div class="chatList chat-history" id="chat-history">
+        <ul *ngFor="let chat of chats">
+            <div *ngIf="chat.contributor.id==1">
+                <li class="clearfix">
+                    {{chat.contributor.name}}
+                    <div class="message-data">
+                        <span class="message-data-time">{{chat.createdAt}}:{{chat.createdAt.toJSON}}</span>
+                    </div>
+                    <div class="message my-message">
+                        {{chat.comment}}
+                    </div>
+                </li>
+            </div>
+
+            <div *ngIf="chat.contributor.id != 1">
+                <li class="clearfix">
+                    <div class="message-data align-right">
+                        <span class="message-data-time">{{chat.createdAt.getHours}}:{{chat.createdAt.getMinutes}}</span>
+                        &nbsp; &nbsp;
+                        <!--投稿者-->
+                        <span class="message-data-name">{{chat.contributor.name}}</span>
+                        <i class="fa fa-circle me"></i>
+                    </div>
+                    <!--投稿文-->
+                    <div class="message other-message float-right">
+                        {{chat.comment}}
+                    </div>
+                </li>
+            </div>
+        </ul>
+    </div>
+    <form #f="ngForm" (ngSubmit)="onSend(f)">
+        <div class="chat-message clearfix">
+            <textarea name="comment" id="message-to-send" placeholder="メッセージを入力してください" rows="3"
+                [ngModel]="coment"></textarea>
+
+            <i class="fa fa-file-o"></i> &nbsp;&nbsp;&nbsp;
+            <i class="fa fa-file-image-o"></i>
+
+            <button type="submit">Send</button>
+        </div>
+    </form>
+</div>

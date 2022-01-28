@@ -10,10 +10,8 @@ import { Room } from "./entity/Room";
 export class App {
     public app: express.Express = express();
     constructor() {
-
         this.setupHeader();
         this.router();
-
     }
     public setupHeader() {
         this.app.use(bodyParser.json());
@@ -25,9 +23,6 @@ export class App {
         });
     }
     public router() {
-
-
-
         // get all users
         this.app.get('/users', async (req: express.Request, res: express.Response) => {
             const connection = await createConnection();
@@ -36,8 +31,6 @@ export class App {
             console.log(users)
             connection.close();
             return res.send(users)
-
-
         });
         this.app.post('/users', async function (req, res) {
             console.log("post /users")
@@ -71,7 +64,10 @@ export class App {
             const results = await chatRepository.find({
                 where: [{
                     room: { id: req.params.id },
-                }], relations: ["contributor", "room"]
+                }], relations: ["contributor", "room"],
+                order:{
+                    createdAt:"ASC"
+                }
             })
             connection.close();
             console.log(results)
@@ -80,9 +76,10 @@ export class App {
 
         // post chat
         this.app.post('/chats/post', async (req, res) => {
+            console.log("chat body" + req.body)
             const connection = await createConnection();
             const chatRepository = connection.getRepository(Chat);
-            console.log("chat body" + req.body)
+            
             const chat = await chatRepository.create(req.body);
             const results = await chatRepository.save(chat);
             console.log(results)
@@ -98,7 +95,7 @@ export class App {
                 where: [{
                     id: req.params.id ,
                 }], relations: ["manager", "participant"]
-            })
+            });
             connection.close();
             console.log(results)
             return res.send(results);
@@ -115,7 +112,5 @@ export class App {
             connection.close();
             return res.send(results);
         });
-
-
     }
 }
