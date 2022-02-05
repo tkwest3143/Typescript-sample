@@ -32,7 +32,7 @@ export class ChatComponent implements OnInit , AfterViewInit{
 
   ngOnInit(): void {
     this.roomId = Number(this.route.snapshot.paramMap.get('id'));
-    this.service.getChats("1").subscribe(res => {
+    this.service.getChats(this.roomId).subscribe(res => {
       this.chats = res;
       console.log("date*:::*" + this.chats[0].createdAt.getDate);
     });

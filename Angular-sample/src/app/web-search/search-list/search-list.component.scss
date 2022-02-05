@@ -1,0 +1,33 @@
+@use "../../common/color";
+
+table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.tbl-header {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-bottom: 1px solid black;
+}
+.tbl-content {
+    height: 500px;
+    overflow-y: scroll;
+    margin-top: 0px;
+    border: 1px solid black;
+}
+th {
+    padding: 20px 15px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+td {
+    padding: 15px;
+    text-align: left;
+    vertical-align: middle;
+    font-weight: 300;
+    font-size: 12px;
+    border-right: solid 1px;
+    border-bottom: solid 1px;
+}

@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, OneToMany, CreateDateColumn, UpdateDateColumn } from "typeorm";
 import { Chat } from "./Chat";
-import { Room } from "./Room";
+import { Friend } from "./Friend";
 
 @Entity()
 export class User extends BaseEntity {
@@ -25,6 +25,9 @@ export class User extends BaseEntity {
 
     @OneToMany(() => Chat, chat => chat.contributor)
     chats: Chat[];
+
+    @OneToMany(() => Friend, friend => friend.friend)
+    friends: Friend[];
 
     @CreateDateColumn()
     readonly createdAt: Date;

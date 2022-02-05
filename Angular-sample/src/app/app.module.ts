@@ -13,6 +13,7 @@ import { UserEditComponent } from './user/user-edit/user-edit.component';
 import { UserService } from './user/user.service';
 import { ChatComponent } from './chat/chat.component';
 import { ChatService } from './chat/chat.service';
+import { SearchListComponent } from './web-search/search-list/search-list.component';
 
 @NgModule({
   declarations: [
@@ -21,15 +22,11 @@ import { ChatService } from './chat/chat.service';
     MenuComponent,
     UserListComponent,
     UserEditComponent,
-    ChatComponent
+    ChatComponent,
+    SearchListComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule
-  ],
-  providers: [UserService,ChatService],
-  bootstrap: [AppComponent]
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule],
+  providers: [UserService, ChatService],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -1,4 +1,6 @@
-.menu-component{
+@use "../common/color.scss";
+
+.menu-component {
     z-index: 10;
 }
 
@@ -8,6 +10,9 @@
     width: 40px;
     height: 32px;
     background: none;
+
+    margin-left: 5px;
+    margin-right: 5px;
     cursor: pointer;
     &.on span:nth-last-child(3) {
         opacity: 0;
@@ -50,14 +55,14 @@
 
 .menu {
     transform-origin: 0% 0%;
-    transform: translate(-100%, 0);
+    transform: translate(-120%, 0);
     transition: transform 0.5s ease;
-    background: #a5dfff;
+    background: color.$button_1;
     width: 30%;
     display: block;
-    margin-top: -50px;
     position: absolute;
-    z-index:10;
+    z-index: 10;
+    margin-top: 10px;
 
     ul {
         margin-top: 50px;
@@ -69,15 +74,15 @@
         margin: 0;
     }
     a {
-        color: white;
         display: block;
+        color: color.$font;
         font: bold 12px/20px Helvetica;
         padding: 10px 25px;
         text-align: center;
         text-decoration: none;
 
         &:hover {
-            background: #93c6e2;
+            background: color.$button_hover_1;
         }
     }
 }

@@ -20,6 +20,7 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
+    "resolveJsonModule": true,
     "target": "esnext",
     "module": "commonjs",
     "lib": [

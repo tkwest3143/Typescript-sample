@@ -15,7 +15,7 @@ export class Chat extends BaseEntity {
     contributor:User;
 
     @ManyToOne(()=>Room,room=>room.chats)
-    room:User;
+    room:Room;
 
     @Column({default: null})
     deletedAt:Date;

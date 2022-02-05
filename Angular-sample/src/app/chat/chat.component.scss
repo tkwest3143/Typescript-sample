@@ -11,20 +11,6 @@ $gray: #92959e;
   box-sizing: border-box;
 }
 
-body {
-  background: #c5ddeb;
-  font: 14px/20px "Lato", Arial, sans-serif;
-  padding: 40px 0;
-  color: white;
-}
-
-.container {
-  margin: 0 auto;
-  width: 750px;
-  background: #444753;
-  border-radius: 5px;
-}
-
 .people-list {
   width: 260px;
   float: left;
@@ -78,8 +64,10 @@ body {
 }
 
 .chat {
-  width: 490px;
-  float: left;
+  display: block;
+  margin: auto;
+  width: 60%;
+  
   background: #f2f5f8;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
@@ -144,9 +132,9 @@ body {
       font-size: 16px;
       border-radius: 7px;
       margin-bottom: 30px;
-      width: 90%;
       position: relative;
-
+      max-width: 70%;
+      display:inline-block;
       &:after {
         bottom: 100%;
         left: 7%;
@@ -158,20 +146,23 @@ body {
         pointer-events: none;
         border-bottom-color: $green;
         border-width: 10px;
-        margin-left: -10px;
+        
       }
     }
 
     .my-message {
       background: $green;
+      &:before {
+        left: 93%;
+      }
     }
 
     .other-message {
       background: $blue;
-
       &:after {
         border-bottom-color: $blue;
         left: 93%;
+        margin-left: -15px;
       }
     }
   }

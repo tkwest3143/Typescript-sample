@@ -14,7 +14,7 @@ export class ChatService {
 
   constructor(private http: HttpClient) {
   }
-  getChats(roomId: string): Observable<Chat[]> {
+  getChats(roomId: number): Observable<Chat[]> {
     return this.http.get<Chat[]>(`${this.url}/chats/${roomId}`)
       .pipe(
         catchError(this.handleError('getChats', []))

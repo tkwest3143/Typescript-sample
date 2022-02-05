@@ -10,4 +10,4 @@ export class User {
   birthDate!: Date;
 
   email!: string;
-  }
+}
