@@ -3,35 +3,37 @@ import { Fab, TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 import { useState } from "react";
 import "./apiTest.css";
+import { ApiTestService } from "./apiTestService";
 
 function ApiTest() {
   // Itemが１ユニット。
-  type ItemsProps = {
+  type ParametersProps = {
     key: string;
     value: string;
   }[];
 
-  const [items, setItems] = useState<ItemsProps>([]);
+  const [parameters, setParameters] = useState<ParametersProps>([]);
 
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
+  const [method, setMethod] = useState("");
   const [inputValue, setInputValue] = useState("");
-
+  const apiTestService = new ApiTestService();
   const handleAddButtonClick = () => {
     //作られるitemの定義
     const newItem = {
       key: inputValue,
       value: inputValue,
     };
-    const newItems = [...items, newItem];
+    const newItems = [...parameters, newItem];
 
     //useStateのitemsに反映
-    setItems(newItems);
+    setParameters(newItems);
   };
   const handleDeleteButtonClick = (index: number) => {
-    items.splice(index, 1);
-    const newItems = [...items];
-    setItems(newItems);
+    parameters.splice(index, 1);
+    const newItems = [...parameters];
+    setParameters(newItems);
   };
   const handleChangeTitle = (val: string) => {
     setTitle(val);
@@ -39,20 +41,26 @@ function ApiTest() {
   const handleChangeUrl = (val: string) => {
     setUrl(val);
   };
+  const handleChangeMethod = (val: string) => {
+    setMethod(val);
+  };
   const handleChangeKey = (index: number, key: string) => {
     //itemsを展開した配列、newItemsを作る
-    const newItems = [...items];
+    const newItems = [...parameters];
     //テキストを更新する。
     newItems[index].key = key;
-    setItems(newItems);
+    setParameters(newItems);
   };
   const handleChangeValue = (index: number, value: string) => {
     //itemsを展開した配列、newItemsを作る
-    const newItems = [...items];
+    const newItems = [...parameters];
     //テキストを更新する。
     newItems[index].value = value;
-    setItems(newItems);
-    console.log(items);
+    setParameters(newItems);
+    console.log(parameters);
+  };
+  const handleSaveClick = () => {
+    apiTestService.save(title, url, method, parameters);
   };
   return (
     <div>
@@ -80,9 +88,20 @@ function ApiTest() {
           value={url}
           onChange={(event) => handleChangeUrl(event.target.value)}
         />
+        <TextField
+          required
+          className="param-field"
+          id="outlined-basic"
+          label="method"
+          variant="outlined"
+          type="text"
+          name="method"
+          value={method}
+          onChange={(event) => handleChangeMethod(event.target.value)}
+        />
       </div>
       <h3>Parameter</h3>
-      {items.map((item, index) => (
+      {parameters.map((item, index) => (
         <div key={index} className="input-parameter">
           <TextField
             required
@@ -127,7 +146,11 @@ function ApiTest() {
         <Button variant="outlined" className="btn">
           API GO!!
         </Button>
-        <Button variant="outlined" className="btn">
+        <Button
+          variant="outlined"
+          className="btn"
+          onClick={() => handleSaveClick()}
+        >
           SAVE
         </Button>
       </div>
