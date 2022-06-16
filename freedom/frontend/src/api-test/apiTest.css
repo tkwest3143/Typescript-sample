@@ -1,0 +1,18 @@
+.input-parameter{
+    margin-left: 3.5em;
+}
+.input-parameter .param-field,.setting-field .param-field{
+    margin-left:0.5em;
+}
+.input-parameter .icon-delete{
+    margin: 0.5em;
+}
+.btn-area{
+    margin-top: 1em;
+    padding: 1em;
+    border: solid 1px;
+}
+.btn-area .btn{
+    margin-right: 0.5em;
+    margin-left: 0.5em;
+}
