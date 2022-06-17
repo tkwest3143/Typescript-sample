@@ -18,4 +18,40 @@ export class ApiTestService {
         console.log(error);
       });
   }
+  async getAllSetting() {
+    return axios
+      .get('api-test/getAllSettings')
+      .then((res) => {
+        console.log(res);
+        return res.data;
+      })
+      .catch((error) => {
+        console.log(error);
+        throw error;
+      });
+  }
+  async apiSend(
+    url: string,
+    method: string,
+    parameters: { key: string; value: string }[]
+  ) {
+    let jsonData: string = '';
+    parameters.forEach((param) => {
+      jsonData = `${jsonData}"${param.key}":"${param.value}",`;
+    });
+    jsonData = `{${jsonData.slice(0, -1)}}`;
+
+    console.log(jsonData);
+    console.log(JSON.parse(jsonData));
+    return await axios
+      .request({
+        method,
+        url,
+        data: JSON.parse(jsonData),
+      })
+      .then((res) => res.data)
+      .catch((err) => {
+        throw err;
+      });
+  }
 }

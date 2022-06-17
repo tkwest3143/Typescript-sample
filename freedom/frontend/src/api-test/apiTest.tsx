@@ -1,5 +1,12 @@
 import { Add, DeleteOutline } from "@mui/icons-material";
-import { Fab, TextField } from "@mui/material";
+import {
+  Fab,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 import Button from "@mui/material/Button";
 import { useState } from "react";
 import "./apiTest.css";
@@ -62,6 +69,9 @@ function ApiTest() {
   const handleSaveClick = () => {
     apiTestService.save(title, url, method, parameters);
   };
+  const handleApiGoClick = () => {
+    apiTestService.apiSend(url, method, parameters);
+  };
   return (
     <div>
       <h3>Setting</h3>
@@ -88,17 +98,23 @@ function ApiTest() {
           value={url}
           onChange={(event) => handleChangeUrl(event.target.value)}
         />
-        <TextField
-          required
-          className="param-field"
-          id="outlined-basic"
-          label="method"
-          variant="outlined"
-          type="text"
-          name="method"
-          value={method}
-          onChange={(event) => handleChangeMethod(event.target.value)}
-        />
+        <FormControl sx={{ minWidth: 200 }} required>
+          <InputLabel id="demo-simple-select-label">Method</InputLabel>
+          <Select
+            className="param-field"
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={method}
+            label="method"
+            onChange={(event) => handleChangeMethod(event.target.value)}
+          >
+            <MenuItem value={"get"}>Get</MenuItem>
+            <MenuItem value={"post"}>Post</MenuItem>
+            <MenuItem value={"delete"}>Delete</MenuItem>
+            <MenuItem value={"put"}>Put</MenuItem>
+            <MenuItem value={"patch"}>Patch</MenuItem>
+          </Select>
+        </FormControl>
       </div>
       <h3>Parameter</h3>
       {parameters.map((item, index) => (
@@ -143,7 +159,11 @@ function ApiTest() {
         <Add />
       </Fab>
       <div className="btn-area">
-        <Button variant="outlined" className="btn">
+        <Button
+          variant="outlined"
+          className="btn"
+          onClick={() => handleApiGoClick()}
+        >
           API GO!!
         </Button>
         <Button
