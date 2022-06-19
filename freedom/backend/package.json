@@ -5,7 +5,7 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
-  "main": "./dist/src/main.js",
+  "main": "./dist/src/electron-main.js",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "tsc",
@@ -20,14 +20,23 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "build:exe": "electron-builder"
+    "build:exe": "electron-builder --win",
+    "build:dmg": "electron-builder --mac"
   },
   "build": {
-    "appId": "com.example.myapp",
-    "productName": "MyApp",
+    "appId": "com.freedom",
+    "productName": "Freedom",
     "win": {
       "target": {
         "target": "zip",
+        "arch": [
+          "x64"
+        ]
+      }
+    },
+    "mac": {
+      "target": {
+        "target": "dmg",
         "arch": [
           "x64"
         ]

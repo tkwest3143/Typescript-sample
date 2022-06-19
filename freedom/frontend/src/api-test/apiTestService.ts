@@ -11,14 +11,14 @@ export class ApiTestService {
     console.log('start save');
     axios
       .post('api-test/save', body)
-      .then((req) => {
-        console.log(req);
+      .then((res) => {
+        console.log(res);
       })
       .catch((error) => {
         console.log(error);
       });
   }
-  async getAllSetting() {
+  getAllSetting() {
     return axios
       .get('api-test/getAllSettings')
       .then((res) => {
@@ -30,7 +30,7 @@ export class ApiTestService {
         throw error;
       });
   }
-  async apiSend(
+  apiSend(
     url: string,
     method: string,
     parameters: { key: string; value: string }[]
@@ -43,14 +43,18 @@ export class ApiTestService {
 
     console.log(jsonData);
     console.log(JSON.parse(jsonData));
-    return await axios
+    return axios
       .request({
         method,
         url,
         data: JSON.parse(jsonData),
       })
-      .then((res) => res.data)
+      .then((res) => {
+        console.log(res);
+        return res.data;
+      })
       .catch((err) => {
+        console.log(err);
         throw err;
       });
   }

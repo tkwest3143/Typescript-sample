@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ConsoleLogger } from '@nestjs/common';
 import { Setting } from 'src/config/Setting';
 import Store from 'electron-store';
 import { ApiTestSetting } from 'src/config/api-test-setting';
 @Injectable()
 export class ApiTestService {
+  private readonly logger = new ConsoleLogger(ApiTestService.name);
   private store = new Store<ApiTestSetting>({
     cwd: 'config', // 保存ディレクトリを指定　※省略可。推奨されていない
     name: 'api-setting', // 設定ファイル名を指定　※省略可。拡張子は.jsonになる
@@ -15,7 +16,6 @@ export class ApiTestService {
     parameters: { key: string; value: string }[],
   ): Setting {
     let id = 1;
-
     if (this.store.has('max_id')) {
       id = Number(this.store.get('max_id')) + 1;
     }
@@ -33,6 +33,7 @@ export class ApiTestService {
     return setting;
   }
   updateSetting(setting: Setting): void {
+    this.logger.log('updateSetting');
     const settings: Setting[] = this.getAllSetting();
     settings[setting.id] = setting;
     this.store.set('settings', settings);

@@ -7,7 +7,7 @@ for /f %%a in ('echo prompt $e ^| cmd') do set ESC=%%a
 echo %ESC%[96mstart freedom application building
 echo %ESC%[0m
 cd %CURRENT%
-cd ../frontend
+cd ../../frontend
 call yarn run build 
 cd ../backend
 call yarn run build

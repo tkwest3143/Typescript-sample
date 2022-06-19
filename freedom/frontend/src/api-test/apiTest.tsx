@@ -1,31 +1,68 @@
 import { Add, DeleteOutline } from "@mui/icons-material";
 import {
+  AlertProps,
+  Box,
   Fab,
   FormControl,
   InputLabel,
   MenuItem,
+  NativeSelect,
   Select,
+  SelectChangeEvent,
+  Snackbar,
+  Stack,
   TextField,
 } from "@mui/material";
+import MuiAlert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
-import { useState } from "react";
+import { useState, forwardRef, useEffect } from "react";
 import "./apiTest.css";
 import { ApiTestService } from "./apiTestService";
 
 function ApiTest() {
-  // Itemが１ユニット。
   type ParametersProps = {
     key: string;
     value: string;
   }[];
-
+  const apiTestService = new ApiTestService();
+  const [id, setId] = useState("");
+  const [allSettings, setAllSettings] = useState<form[]>([]);
   const [parameters, setParameters] = useState<ParametersProps>([]);
-
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
   const [method, setMethod] = useState("");
-  const [inputValue, setInputValue] = useState("");
-  const apiTestService = new ApiTestService();
+  const [inputValue] = useState("");
+  const [open, setOpen] = useState(false);
+  const [alertText, setAlertText] = useState("");
+  type form = {
+    id: string;
+    title: string;
+    url: string;
+    method: string;
+    parameters: ParametersProps;
+  };
+  const onload = () => {
+    apiTestService.getAllSetting().then((res: form[]) => {
+      setAllSettings(res);
+      console.log(res);
+      console.log(res[0].id);
+    });
+    console.log(allSettings);
+  };
+  useEffect(() => {
+    onload();
+  });
+  const handleClose = (
+    _event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
   const handleAddButtonClick = () => {
     //作られるitemの定義
     const newItem = {
@@ -66,15 +103,64 @@ function ApiTest() {
     setParameters(newItems);
     console.log(parameters);
   };
+  const openAlert = (text: string) => {
+    setOpen(true);
+    setAlertText(text);
+  };
   const handleSaveClick = () => {
     apiTestService.save(title, url, method, parameters);
+    openAlert("complete save");
   };
   const handleApiGoClick = () => {
     apiTestService.apiSend(url, method, parameters);
+    openAlert("complete api send");
   };
+
+  const handleChange = (event: SelectChangeEvent) => {
+    const id = event.target.value;
+    setId(id);
+    if (id) {
+      const selectedSetting = allSettings.find((setting) => setting.id === id);
+      if (!selectedSetting) {
+        return;
+      }
+      setTitle(selectedSetting.title);
+      setUrl(selectedSetting.url);
+      setMethod(selectedSetting.method);
+      setParameters(selectedSetting.parameters);
+    }
+  };
+
+  const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
+    props,
+    ref
+  ) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
   return (
     <div>
       <h3>Setting</h3>
+      <Box sx={{ minWidth: 120 }}>
+        <FormControl sx={{ m: 1, minWidth: 240 }} variant="standard">
+          <InputLabel id="demo-simple-select-standard-label">
+            select setting
+          </InputLabel>
+          <Select
+            labelId="demo-simple-select-standard-label"
+            id="demo-simple-select-standard"
+            value={id}
+            onChange={handleChange}
+            label="select setting"
+          >
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+            {allSettings.map((setting, index) => (
+              <MenuItem value={setting.id}>{setting.title}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
       <div className="setting-field">
         <TextField
           required
@@ -159,20 +245,31 @@ function ApiTest() {
         <Add />
       </Fab>
       <div className="btn-area">
-        <Button
-          variant="outlined"
-          className="btn"
-          onClick={() => handleApiGoClick()}
-        >
-          API GO!!
-        </Button>
-        <Button
-          variant="outlined"
-          className="btn"
-          onClick={() => handleSaveClick()}
-        >
-          SAVE
-        </Button>
+        <Stack spacing={1} sx={{ width: "20%" }}>
+          <Button
+            variant="outlined"
+            className="btn"
+            onClick={() => handleSaveClick()}
+          >
+            SAVE
+          </Button>
+          <Button
+            variant="outlined"
+            className="btn"
+            onClick={() => handleApiGoClick()}
+          >
+            API GO!!
+          </Button>
+          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+            <Alert
+              onClose={handleClose}
+              severity="success"
+              sx={{ width: "100%" }}
+            >
+              {alertText}
+            </Alert>
+          </Snackbar>
+        </Stack>
       </div>
     </div>
   );
