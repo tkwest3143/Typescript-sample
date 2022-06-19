@@ -18,19 +18,35 @@ export class ApiTestService {
         console.log(error);
       });
   }
-  getAllSetting() {
-    return axios
-      .get('api-test/getAllSettings')
+  update(
+    id: string,
+    title: string,
+    url: string,
+    method: string,
+    parameters: { key: string; value: string }[]
+  ) {
+    const body = { id, title, url, method, parameters };
+    console.log('start update');
+    axios
+      .post('api-test/update', body)
       .then((res) => {
         console.log(res);
-        return res.data;
       })
       .catch((error) => {
         console.log(error);
-        throw error;
       });
   }
-  apiSend(
+  async getAllSetting() {
+    try {
+      const res = await axios.get('api-test/getAllSettings');
+      console.log(res);
+      return res.data;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+  async apiSend(
     url: string,
     method: string,
     parameters: { key: string; value: string }[]
@@ -43,19 +59,17 @@ export class ApiTestService {
 
     console.log(jsonData);
     console.log(JSON.parse(jsonData));
-    return axios
-      .request({
+    try {
+      const res = await axios.request({
         method,
         url,
         data: JSON.parse(jsonData),
-      })
-      .then((res) => {
-        console.log(res);
-        return res.data;
-      })
-      .catch((err) => {
-        console.log(err);
-        throw err;
       });
+      console.log(res);
+      return res.data;
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
   }
 }

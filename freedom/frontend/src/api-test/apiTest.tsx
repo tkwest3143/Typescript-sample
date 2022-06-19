@@ -20,6 +20,13 @@ import "./apiTest.css";
 import { ApiTestService } from "./apiTestService";
 
 function ApiTest() {
+  type form = {
+    id: string;
+    title: string;
+    url: string;
+    method: string;
+    parameters: ParametersProps;
+  };
   type ParametersProps = {
     key: string;
     value: string;
@@ -34,20 +41,14 @@ function ApiTest() {
   const [inputValue] = useState("");
   const [open, setOpen] = useState(false);
   const [alertText, setAlertText] = useState("");
-  type form = {
-    id: string;
-    title: string;
-    url: string;
-    method: string;
-    parameters: ParametersProps;
-  };
+  const [responseText, setResponseText] = useState("");
+
   const onload = () => {
-    apiTestService.getAllSetting().then((res: form[]) => {
-      setAllSettings(res);
-      console.log(res);
-      console.log(res[0].id);
+    apiTestService.getAllSetting().then((res) => {
+      console.log("set all settings", res);
+      setAllSettings(res.data);
     });
-    console.log(allSettings);
+    console.log("all settings", allSettings);
   };
   useEffect(() => {
     onload();
@@ -108,11 +109,23 @@ function ApiTest() {
     setAlertText(text);
   };
   const handleSaveClick = () => {
+    if (!id) {
+      apiTestService.update(id, title, url, method, parameters);
+    }
     apiTestService.save(title, url, method, parameters);
     openAlert("complete save");
   };
   const handleApiGoClick = () => {
-    apiTestService.apiSend(url, method, parameters);
+    apiTestService
+      .apiSend(url, method, parameters)
+      .then((res) => {
+        console.log(res);
+        setResponseText(res);
+      })
+      .catch((err) => {
+        setResponseText(err);
+      });
+
     openAlert("complete api send");
   };
 
@@ -155,7 +168,7 @@ function ApiTest() {
             <MenuItem value="">
               <em>None</em>
             </MenuItem>
-            {allSettings.map((setting, index) => (
+            {allSettings.map((setting, _index) => (
               <MenuItem value={setting.id}>{setting.title}</MenuItem>
             ))}
           </Select>
@@ -271,6 +284,15 @@ function ApiTest() {
           </Snackbar>
         </Stack>
       </div>
+      <TextField
+        id="filled-multiline-static"
+        label="response value"
+        disabled={true}
+        multiline
+        rows={4}
+        value={responseText}
+        variant="filled"
+      />
     </div>
   );
 }

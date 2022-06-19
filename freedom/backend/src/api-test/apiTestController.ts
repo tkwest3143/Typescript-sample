@@ -20,9 +20,9 @@ export class ApiTestController {
     this.service.getSettingById(addSetting.id);
     return `createTask Success! Prameter [title:${saveForm.title}, descritpion:${saveForm.url}, method:${saveForm.method}, parameters:${saveForm.parameters}]`;
   }
-  @Post('save/:id')
+  @Post('update')
   saveById(
-    @Param('id') id: number,
+    @Body('id') id: number,
     @Body('title') title: string,
     @Body('url') url: string,
     @Body('method') method: string,
