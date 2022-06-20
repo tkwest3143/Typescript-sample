@@ -6,7 +6,6 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
-  NativeSelect,
   Select,
   SelectChangeEvent,
   Snackbar,
@@ -45,10 +44,8 @@ function ApiTest() {
 
   const onload = () => {
     apiTestService.getAllSetting().then((res) => {
-      console.log("set all settings", res);
-      setAllSettings(res.data);
+      setAllSettings(res);
     });
-    console.log("all settings", allSettings);
   };
   useEffect(() => {
     onload();

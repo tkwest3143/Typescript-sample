@@ -39,10 +39,8 @@ export class ApiTestService {
   async getAllSetting() {
     try {
       const res = await axios.get('api-test/getAllSettings');
-      console.log(res);
       return res.data;
     } catch (error) {
-      console.log(error);
       throw error;
     }
   }
@@ -56,19 +54,14 @@ export class ApiTestService {
       jsonData = `${jsonData}"${param.key}":"${param.value}",`;
     });
     jsonData = `{${jsonData.slice(0, -1)}}`;
-
-    console.log(jsonData);
-    console.log(JSON.parse(jsonData));
     try {
       const res = await axios.request({
         method,
         url,
         data: JSON.parse(jsonData),
       });
-      console.log(res);
       return res.data;
     } catch (err) {
-      console.log(err);
       throw err;
     }
   }

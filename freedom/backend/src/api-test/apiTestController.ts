@@ -7,7 +7,7 @@ export class ApiTestController {
   constructor(private readonly service: ApiTestService) {}
   @Get('getAllSettings')
   getAllSettings() {
-    return { data: this.service.getAllSetting() };
+    return this.service.getAllSetting();
   }
   @Post('save')
   save(@Body() saveForm: SaveForm) {
