@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES2021",
+    "lib": ["ES2021", "DOM"],
+    "esModuleInterop": true,
+    "strict": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "jsx": "react",
+    "noImplicitAny": false,
+    "sourceMap": true,
+    "outDir": "./build",
+    "skipLibCheck": true
+  }
+}
