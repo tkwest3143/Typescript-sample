@@ -1,14 +1,14 @@
 import { Box } from "@mui/material";
 import React from "react";
 
-function Home() {
+function Config() {
   return (
     <div>
       <Box color="primary">
-        <h2>HOME</h2>
+        <h2>Config</h2>
       </Box>
     </div>
   );
 }
 
-export default Home;
+export default Config;

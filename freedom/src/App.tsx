@@ -1,3 +1,4 @@
+import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
 import "./App.css";
@@ -5,16 +6,24 @@ import Header from "./common/header/header";
 import Router from "./router";
 
 function App() {
+  const darkTheme = createTheme({
+    palette: {
+      mode: "dark",
+    },
+  });
   return (
     <BrowserRouter>
-      <div className="App">
-        <div className="header">
-          <Header />
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline />
+        <div className="App">
+          <div className="header">
+            <Header />
+          </div>
+          <div className="main-content">
+            <Router />
+          </div>
         </div>
-        <div className="main-content">
-          <Router />
-        </div>
-      </div>
+      </ThemeProvider>
     </BrowserRouter>
   );
 }

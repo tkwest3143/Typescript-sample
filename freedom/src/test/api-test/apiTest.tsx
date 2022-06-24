@@ -2,18 +2,23 @@ import { Add, DeleteOutline } from "@mui/icons-material";
 import {
   AlertProps,
   Box,
+  Card,
+  CardContent,
   Fab,
   FormControl,
   InputLabel,
+  LinearProgress,
   MenuItem,
   Select,
   SelectChangeEvent,
   Snackbar,
   Stack,
   TextField,
+  Typography,
 } from "@mui/material";
 import MuiAlert, { AlertColor } from "@mui/material/Alert";
 import Button from "@mui/material/Button";
+import { AxiosResponse } from "axios";
 import React from "react";
 import { useState, forwardRef, useEffect } from "react";
 import "./apiTest.css";
@@ -45,7 +50,8 @@ function ApiTest() {
   const [inputValue] = useState("");
   const [open, setOpen] = useState(false);
   const [alertProp, setAlertProp] = useState<AlertProp>();
-  const [responseText, setResponseText] = useState("");
+  const [response, setResponse] = useState<AxiosResponse | null>(null);
+  const [isOpration, setIsOpration] = useState<boolean>(false);
 
   const onload = () => {
     apiTestService.getAllSetting().then((res) => {
@@ -122,24 +128,26 @@ function ApiTest() {
     setAlertProp(alertProp);
   };
   const handleSaveClick = () => {
+    setIsOpration(true);
     if (id) {
       apiTestService.update(id, title, url, method, parameters);
       return;
     }
     apiTestService.save(title, url, method, parameters);
+    setIsOpration(false);
     openAlert({ text: "complete save", alertColor: "success" });
   };
   const handleApiGoClick = () => {
+    setIsOpration(true);
     apiTestService
       .apiSend(url, method, parameters)
       .then((res) => {
-        console.log(res);
-        setResponseText(res);
+        setResponse(res);
       })
       .catch((err) => {
-        setResponseText(err);
+        setResponse(err);
       });
-
+    setIsOpration(false);
     openAlert({ text: "complete api send", alertColor: "success" });
   };
 
@@ -271,44 +279,65 @@ function ApiTest() {
       >
         <Add />
       </Fab>
-      <div className="btn-area">
-        <Stack spacing={1} sx={{ width: "20%" }}>
-          <Button
-            variant="outlined"
-            className="btn"
-            onClick={() => handleSaveClick()}
-          >
-            SAVE
-          </Button>
-          <Button
-            variant="outlined"
-            className="btn"
-            onClick={() => handleApiGoClick()}
-          >
-            API GO!!
-          </Button>
-          {alertProp && (
-            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-              <Alert
-                onClose={handleClose}
-                severity={alertProp.alertColor}
-                sx={{ width: "100%" }}
+      {response && (
+        <Box sx={{ minWidth: 120 }}>
+          <Card sx={{ minWidth: 275 }}>
+            <CardContent>
+              <Typography
+                sx={{ fontSize: 14 }}
+                color="text.secondary"
+                gutterBottom
               >
-                {alertProp.text}
-              </Alert>
-            </Snackbar>
-          )}
-        </Stack>
+                {response.status},{response.statusText}
+              </Typography>
+              <Typography variant="h5" component="div">
+                {JSON.stringify(response.data)}
+              </Typography>
+            </CardContent>
+          </Card>
+        </Box>
+      )}
+      <div className="btn-area">
+        {isOpration && (
+          <Box sx={{ width: "100%" }}>
+            <LinearProgress />
+          </Box>
+        )}
+
+        {!isOpration && (
+          <Stack spacing={1} sx={{ width: "20%" }}>
+            <Button
+              variant="outlined"
+              className="btn"
+              onClick={() => handleSaveClick()}
+            >
+              SAVE
+            </Button>
+            <Button
+              variant="outlined"
+              className="btn"
+              onClick={() => handleApiGoClick()}
+            >
+              API GO!!
+            </Button>
+            {alertProp && (
+              <Snackbar
+                open={open}
+                autoHideDuration={6000}
+                onClose={handleClose}
+              >
+                <Alert
+                  onClose={handleClose}
+                  severity={alertProp.alertColor}
+                  sx={{ width: "100%" }}
+                >
+                  {alertProp.text}
+                </Alert>
+              </Snackbar>
+            )}
+          </Stack>
+        )}
       </div>
-      <TextField
-        id="filled-multiline-static"
-        label="response value"
-        disabled={true}
-        multiline
-        rows={4}
-        value={responseText}
-        variant="filled"
-      />
     </div>
   );
 }

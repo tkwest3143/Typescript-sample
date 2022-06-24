@@ -2,87 +2,184 @@ import {
   AppBar,
   Box,
   Button,
-  createTheme,
   Divider,
+  Drawer,
   Fade,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
   Menu,
   MenuItem,
-  ThemeProvider,
   Toolbar,
   Typography,
 } from "@mui/material";
-import React from "react";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
+import MailIcon from "@mui/icons-material/Mail";
+import CloseIcon from "@mui/icons-material/Close";
+import DensityMediumSharpIcon from "@mui/icons-material/DensityMediumSharp";
+import SettingsIcon from "@mui/icons-material/Settings";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
+import "./header.css";
+
 function Header() {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
+  const [testAnchorEl, setTestAnchorEl] = useState<null | HTMLElement>(null);
+  const testOpen = Boolean(testAnchorEl);
+  const handleTestClick = (event: React.MouseEvent<HTMLElement>) => {
+    setTestAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleTestClose = () => {
+    setTestAnchorEl(null);
   };
-  const darkTheme = createTheme({
-    palette: {
-      mode: "dark",
-      primary: {
-        main: "#1976d2",
-      },
-    },
+  const [configAnchorEl, setConfigAnchorEl] = useState<null | HTMLElement>(
+    null
+  );
+  const configOpen = Boolean(configAnchorEl);
+  const handleConfigClick = (event: React.MouseEvent<HTMLElement>) => {
+    setConfigAnchorEl(event.currentTarget);
+  };
+  const handleConfigClose = () => {
+    setConfigAnchorEl(null);
+  };
+
+  const [state, setState] = useState({
+    open: false,
   });
+
+  const toggleDrawer =
+    (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
+      if (
+        event.type === "keydown" &&
+        ((event as React.KeyboardEvent).key === "Tab" ||
+          (event as React.KeyboardEvent).key === "Shift")
+      ) {
+        return;
+      }
+
+      setState({ ...state, open });
+    };
+
+  const list = () => (
+    <Box sx={{ width: 250 }} role="presentation">
+      <List>
+        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
+          <ListItem key={text} disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+      <Divider />
+      <List>
+        {["All mail", "Trash", "Spam"].map((text, index) => (
+          <ListItem key={text} disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+      <Divider />
+      <List>
+        <ListItem disablePadding>
+          <ListItemButton
+            onClick={toggleDrawer(false)}
+            onKeyDown={toggleDrawer(false)}
+          >
+            <ListItemIcon>
+              <CloseIcon />
+            </ListItemIcon>
+            <ListItemText primary="Close" />
+          </ListItemButton>
+        </ListItem>
+      </List>
+    </Box>
+  );
   return (
     <div>
-      <ThemeProvider theme={darkTheme}>
-        <Box sx={{ flexGrow: 1 }}>
-          <AppBar position="static" color="primary">
-            <Toolbar>
-              <Button
-                variant="text"
-                aria-label="Home"
-                to="/"
-                color="success"
-                component={Link}
-              >
-                <Typography variant="h4" component="h3">
-                  FREEDOM
-                </Typography>
-              </Button>
-              <Divider
-                flexItem
-                orientation="vertical"
-                sx={{ mx: 0.5, my: 1 }}
-              />
-              <Button
-                color="success"
-                id="fade-button"
-                aria-controls={open ? "fade-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
-                onClick={handleClick}
-              >
-                Test
-              </Button>
-              <Menu
-                id="fade-menu"
-                MenuListProps={{
-                  "aria-labelledby": "fade-button",
-                }}
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                TransitionComponent={Fade}
-              >
-                <MenuItem onClick={handleClose}>
-                  <Button to="/api-test" color="success" component={Link}>
-                    API test
-                  </Button>
-                </MenuItem>
-              </Menu>
-            </Toolbar>
-          </AppBar>
-        </Box>
-      </ThemeProvider>
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="static" color="primary">
+          <Toolbar>
+            <Button onClick={toggleDrawer(true)}>
+              <DensityMediumSharpIcon />
+            </Button>
+            <Drawer open={state["open"]} onClose={toggleDrawer(false)}>
+              {list()}
+            </Drawer>
+            <Button variant="text" aria-label="Home" to="/" component={Link}>
+              <Typography variant="h4" component="h3">
+                FREEDOM
+              </Typography>
+            </Button>
+            <Divider flexItem orientation="vertical" sx={{ mx: 0.5, my: 1 }} />
+            <Button
+              id="fade-button"
+              aria-controls={testOpen ? "fade-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={testOpen ? "true" : undefined}
+              onClick={handleTestClick}
+            >
+              Test
+            </Button>
+            <Menu
+              id="fade-menu"
+              MenuListProps={{
+                "aria-labelledby": "fade-button",
+              }}
+              anchorEl={testAnchorEl}
+              open={testOpen}
+              onClose={handleTestClose}
+              TransitionComponent={Fade}
+            >
+              <MenuItem onClick={handleTestClose}>
+                <Button to="/api-test" component={Link}>
+                  API test
+                </Button>
+              </MenuItem>
+              <MenuItem onClick={handleTestClose}>
+                <Button to="/code-test" component={Link}>
+                  code test
+                </Button>
+              </MenuItem>
+            </Menu>
+            <Button
+              id="basic-button"
+              aria-controls={configOpen ? "basic-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={configOpen ? "true" : undefined}
+              onClick={handleConfigClick}
+              className="right-btn-area"
+            >
+              <SettingsIcon />
+            </Button>
+            <Menu
+              id="basic-menu"
+              anchorEl={configAnchorEl}
+              open={configOpen}
+              onClose={handleConfigClose}
+              MenuListProps={{
+                "aria-labelledby": "basic-button",
+              }}
+            >
+              <MenuItem onClick={handleConfigClose}>
+                <Button to="/setting-file" component={Link}>
+                  About Setting File
+                </Button>
+              </MenuItem>
+            </Menu>
+          </Toolbar>
+        </AppBar>
+      </Box>
     </div>
   );
 }

@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { Setting } from '../electron/process/model/setting';
+import axios, { AxiosError, AxiosResponse } from 'axios';
+import { Setting } from '../../electron/process/model/setting';
 
 export class ApiTestService {
   save(
@@ -35,7 +35,7 @@ export class ApiTestService {
     url: string,
     method: string,
     parameters: { key: string; value: string }[]
-  ) {
+  ): Promise<AxiosResponse> {
     let jsonData: string = '';
     parameters.forEach((param) => {
       jsonData = `${jsonData}"${param.key}":"${param.value}",`;
@@ -47,9 +47,14 @@ export class ApiTestService {
         url,
         data: JSON.parse(jsonData),
       });
-      return res.data;
+      res as AxiosResponse;
+      return res;
     } catch (err) {
-      throw err;
+      const res = (err as AxiosError).response;
+      if (!res) {
+        throw err;
+      }
+      return res;
     }
   }
 }
