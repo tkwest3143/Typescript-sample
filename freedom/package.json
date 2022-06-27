@@ -9,8 +9,9 @@
     "react-build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "electron-start": "yarn start && electron .",
-    "build": "yarn react-build && yarn tsc"
+    "electron-start": " electron .",
+    "build": "yarn react-build && yarn tsc",
+    "build:pkg": "yarn electron-builder"
   },
   "build": {
     "extends": null,

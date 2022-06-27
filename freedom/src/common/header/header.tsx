@@ -24,6 +24,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 import "./header.css";
+import { MENU_ITEMS } from "../constant/menu";
 
 function Header() {
   const [testAnchorEl, setTestAnchorEl] = useState<null | HTMLElement>(null);
@@ -65,26 +66,18 @@ function Header() {
   const list = () => (
     <Box sx={{ width: 250 }} role="presentation">
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
+        {MENU_ITEMS.map((item, index) => (
+          <ListItem key={item.title} disablePadding>
+            <ListItemButton
+              to={item.path}
+              component={Link}
+              onClick={toggleDrawer(false)}
+              onKeyDown={toggleDrawer(false)}
+            >
               <ListItemIcon>
                 {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
               </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
+              <ListItemText primary={item.title} />
             </ListItemButton>
           </ListItem>
         ))}
@@ -153,6 +146,7 @@ function Header() {
               </MenuItem>
             </Menu>
             <Button
+              sx={{ marginLeft: "auto", marginRight: 0 }}
               id="basic-button"
               aria-controls={configOpen ? "basic-menu" : undefined}
               aria-haspopup="true"
