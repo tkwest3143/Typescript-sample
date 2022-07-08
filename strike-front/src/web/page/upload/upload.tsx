@@ -1,10 +1,68 @@
-import { Box } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
+import { createRef, useRef, useState } from "react";
+import { UploadService } from "../../service/uploadService";
 
 function Upload() {
+  const service = new UploadService();
+  const [files, setFiles] = useState<File[] | null>(null);
+  const [filesName, setFilesName] = useState<string>("");
+  const fileSelectRef = useRef<HTMLInputElement>(null);
+  const handleFileSelectClick = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    const img: File = e.target.files[0];
+    const targetFiles = files ? files : [];
+    console.log(targetFiles);
+    targetFiles.push(img);
+    setFiles(targetFiles);
+    setFilesName(getFileNames());
+  };
+  const getFileNames = () => {
+    if (!files) {
+      return "";
+    }
+    let result: string = "";
+    files.forEach((file) => {
+      result = result + file.name + "\n";
+    });
+    return result;
+  };
+  const hundleReferenceClick = () => {
+    (fileSelectRef.current as HTMLInputElement).click();
+  };
+  const hundleClearClick = () => {
+    setFiles(null);
+    setFilesName("");
+  };
+
+  const onSendClick = () => {
+    if (!files || files.length == 0) {
+      alert("ファイルが選択されていません");
+      return;
+    }
+    service.fileUpload(files);
+  };
   return (
     <div>
       <Box color="primary">
-        <h2>Config</h2>
+        <h2>Upload</h2>
+      </Box>
+      <TextField
+        disabled
+        multiline
+        value={filesName}
+        onClick={hundleReferenceClick}
+      />
+      <Button onClick={hundleReferenceClick}>参照</Button>
+      <Button onClick={hundleClearClick}>クリア</Button>
+      <input
+        hidden
+        type="file"
+        id="file-select"
+        onChange={handleFileSelectClick}
+        ref={fileSelectRef}
+      />
+      <Box>
+        <Button onClick={onSendClick}>送信</Button>
       </Box>
     </div>
   );

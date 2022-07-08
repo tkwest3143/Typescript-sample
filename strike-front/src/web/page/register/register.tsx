@@ -1,28 +1,26 @@
 import { Box, Button, TextField } from "@mui/material";
-import { useContext, useState } from "react";
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../auth/auth";
-import { AuthModel } from "../../auth/authModel";
+import { useState } from "react";
 import { LoginService } from "../../service/loginService";
+import { RegisterService } from "../../service/registerService";
 
-function Login() {
-  const authModel = useContext(AuthContext);
-  let navigate = useNavigate();
-  let location = useLocation();
-  const [form, setForm] = useState<LoginForm>({
+function Register() {
+  const [form, setForm] = useState<RegisterForm>({
     username: "",
     password: "",
+    mail_addresss: "",
   });
-  type LoginForm = {
+  type RegisterForm = {
     username: string;
     password: string;
+    mail_addresss: string;
   };
-  const service = new LoginService();
+  const service = new RegisterService();
 
   const handleChangeUsername = (val: string) => {
     setForm({
       username: val,
       password: form.password,
+      mail_addresss: form.mail_addresss,
     });
   };
 
@@ -30,21 +28,23 @@ function Login() {
     setForm({
       username: form.username,
       password: val,
+      mail_addresss: form.mail_addresss,
     });
   };
-  const handleLoginClick = async () => {
-    const userModel = await service.doLogin(form.username, form.password);
-    let model = authModel.authData ? authModel.authData : new AuthModel();
-    console.log(model);
-    model.authUser = userModel;
-    authModel.setAuthData(model);
-
-    navigate("/register");
+  const handleChangeMailAddress = (val: string) => {
+    setForm({
+      username: form.username,
+      password: form.password,
+      mail_addresss: val,
+    });
+  };
+  const handleLoginClick = () => {
+    service.doRegister(form.username, form.password, form.mail_addresss);
   };
   return (
     <div>
       <Box color="primary">
-        <h2>LOGIN</h2>
+        <h2>Register</h2>
       </Box>
       <TextField
         required
@@ -61,11 +61,19 @@ function Login() {
         value={form.password}
         onChange={(event) => handleChangePassword(event.target.value)}
       />
+      <TextField
+        required
+        id="email"
+        type="email"
+        label="email"
+        value={form.mail_addresss}
+        onChange={(event) => handleChangeMailAddress(event.target.value)}
+      />
       <Box>
-        <Button onClick={handleLoginClick}>ログイン</Button>
+        <Button onClick={handleLoginClick}>登録</Button>
       </Box>
     </div>
   );
 }
 
-export default Login;
+export default Register;
