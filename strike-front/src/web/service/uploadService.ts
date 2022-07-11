@@ -1,4 +1,3 @@
-import { SuccesResponse } from '../../server/data/response/SuccessResponse';
 import ServerAccessr from '../../server/request/request';
 
 export class UploadService {

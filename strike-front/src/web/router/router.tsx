@@ -9,6 +9,7 @@ function Router() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<AuthRoute element={<Register />} />} />
       <Route path="/file-upload" element={<AuthRoute element={<Upload />} />} />
+      <Route path="/" element={<Login />} />
     </Routes>
   );
 }

@@ -1,6 +1,6 @@
 import { Box, Button, TextField } from "@mui/material";
 import { useState } from "react";
-import { LoginService } from "../../service/loginService";
+import MessageService from "../../service/messageService";
 import { RegisterService } from "../../service/registerService";
 
 function Register() {
@@ -44,7 +44,7 @@ function Register() {
   return (
     <div>
       <Box color="primary">
-        <h2>Register</h2>
+        <h2>{MessageService.Messages.menu.register}</h2>
       </Box>
       <TextField
         required
@@ -70,7 +70,9 @@ function Register() {
         onChange={(event) => handleChangeMailAddress(event.target.value)}
       />
       <Box>
-        <Button onClick={handleLoginClick}>登録</Button>
+        <Button onClick={handleLoginClick}>
+          {MessageService.Messages.text.register}
+        </Button>
       </Box>
     </div>
   );

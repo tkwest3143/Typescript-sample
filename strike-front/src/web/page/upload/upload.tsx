@@ -1,5 +1,6 @@
 import { Box, Button, TextField } from "@mui/material";
-import { createRef, useRef, useState } from "react";
+import { useRef, useState } from "react";
+import MessageService from "../../service/messageService";
 import { UploadService } from "../../service/uploadService";
 
 function Upload() {
@@ -36,7 +37,7 @@ function Upload() {
 
   const onSendClick = () => {
     if (!files || files.length == 0) {
-      alert("ファイルが選択されていません");
+      alert(MessageService.Messages.alert.not_selected_file);
       return;
     }
     service.fileUpload(files);
@@ -44,7 +45,7 @@ function Upload() {
   return (
     <div>
       <Box color="primary">
-        <h2>Upload</h2>
+        <h2>{MessageService.Messages.menu.file_upload}</h2>
       </Box>
       <TextField
         disabled
@@ -52,8 +53,12 @@ function Upload() {
         value={filesName}
         onClick={hundleReferenceClick}
       />
-      <Button onClick={hundleReferenceClick}>参照</Button>
-      <Button onClick={hundleClearClick}>クリア</Button>
+      <Button onClick={hundleReferenceClick}>
+        {MessageService.Messages.text.refarence}
+      </Button>
+      <Button onClick={hundleClearClick}>
+        {MessageService.Messages.text.clear}
+      </Button>
       <input
         hidden
         type="file"
@@ -62,7 +67,9 @@ function Upload() {
         ref={fileSelectRef}
       />
       <Box>
-        <Button onClick={onSendClick}>送信</Button>
+        <Button onClick={onSendClick}>
+          {MessageService.Messages.text.send}
+        </Button>
       </Box>
     </div>
   );

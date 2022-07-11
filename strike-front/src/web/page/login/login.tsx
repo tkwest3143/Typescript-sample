@@ -1,14 +1,22 @@
-import { Box, Button, TextField } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  Container,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { LockOutlined as LockOutlinedIcon } from "@mui/icons-material";
 import { useContext, useState } from "react";
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../auth/auth";
 import { AuthModel } from "../../auth/authModel";
 import { LoginService } from "../../service/loginService";
+import MessageService from "../../service/messageService";
 
 function Login() {
   const authModel = useContext(AuthContext);
   let navigate = useNavigate();
-  let location = useLocation();
   const [form, setForm] = useState<LoginForm>({
     username: "",
     password: "",
@@ -35,7 +43,6 @@ function Login() {
   const handleLoginClick = async () => {
     const userModel = await service.doLogin(form.username, form.password);
     let model = authModel.authData ? authModel.authData : new AuthModel();
-    console.log(model);
     model.authUser = userModel;
     authModel.setAuthData(model);
 
@@ -43,27 +50,45 @@ function Login() {
   };
   return (
     <div>
-      <Box color="primary">
-        <h2>LOGIN</h2>
-      </Box>
-      <TextField
-        required
-        id="username"
-        label="username"
-        value={form.username}
-        onChange={(event) => handleChangeUsername(event.target.value)}
-      />
-      <TextField
-        required
-        id="password"
-        type="password"
-        label="password"
-        value={form.password}
-        onChange={(event) => handleChangePassword(event.target.value)}
-      />
-      <Box>
-        <Button onClick={handleLoginClick}>ログイン</Button>
-      </Box>
+      <Container component="main" maxWidth="xs">
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            <h2>{MessageService.Messages.menu.login}</h2>
+          </Typography>
+          <Box component="form" noValidate sx={{ mt: 1 }}>
+            <TextField
+              required
+              id="username"
+              label="username"
+              value={form.username}
+              onChange={(event) => handleChangeUsername(event.target.value)}
+            />
+            <TextField
+              required
+              id="password"
+              type="password"
+              label="password"
+              value={form.password}
+              onChange={(event) => handleChangePassword(event.target.value)}
+            />
+            <Box>
+              <Button onClick={handleLoginClick}>
+                {MessageService.Messages.text.login}
+              </Button>
+            </Box>
+          </Box>
+        </Box>
+      </Container>
     </div>
   );
 }

@@ -4,7 +4,6 @@ import {
   Button,
   Divider,
   Drawer,
-  Fade,
   List,
   ListItem,
   ListItemButton,
@@ -15,17 +14,22 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import CloseIcon from "@mui/icons-material/Close";
-import DensityMediumSharpIcon from "@mui/icons-material/DensityMediumSharp";
-import SettingsIcon from "@mui/icons-material/Settings";
-import React, { useState } from "react";
+import {
+  Login as LoginIcon,
+  MoveToInbox as InboxIcon,
+  Mail as MailIcon,
+  Close as CloseIcon,
+  DensityMediumSharp as DensityMediumSharpIcon,
+  Settings as SettingsIcon,
+} from "@mui/icons-material";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { application_name, MENU_ITEMS } from "../../../constant";
+import { AuthContext } from "../../auth/auth";
 
 function Header() {
+  const authContext = useContext(AuthContext);
   const [configAnchorEl, setConfigAnchorEl] = useState<null | HTMLElement>(
     null
   );
@@ -53,25 +57,79 @@ function Header() {
 
       setState({ ...state, open });
     };
+  const authMenu = () => {
+    if (authContext && authContext.authData && authContext.authData.authUser) {
+      return (
+        <Box sx={{ marginLeft: "auto", marginRight: 0 }}>
+          <Button
+            id="basic-button"
+            aria-controls={configOpen ? "basic-menu" : undefined}
+            aria-haspopup="true"
+            aria-expanded={configOpen ? "true" : undefined}
+            onClick={handleConfigClick}
+            className="right-btn-area"
+          >
+            {authContext.authData.authUser.username}
+          </Button>
+          <Menu
+            id="basic-menu"
+            anchorEl={configAnchorEl}
+            open={configOpen}
+            onClose={handleConfigClose}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
+            }}
+          >
+            <MenuItem onClick={handleConfigClose}>
+              <Button to="/setting-file" component={Link}>
+                <SettingsIcon />
+              </Button>
+            </MenuItem>
+          </Menu>
+        </Box>
+      );
+    }
+    return (
+      <Box sx={{ marginLeft: "auto", marginRight: 0 }}>
+        <Button to="/login" component={Link}>
+          <LoginIcon />
+        </Button>
+      </Box>
+    );
+  };
 
   const list = () => (
     <Box sx={{ width: 250 }} role="presentation">
       <List>
-        {MENU_ITEMS.map((item, index) => (
-          <ListItem key={item.title} disablePadding>
-            <ListItemButton
-              to={item.path}
-              component={Link}
-              onClick={toggleDrawer(false)}
-              onKeyDown={toggleDrawer(false)}
-            >
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={item.title} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        {MENU_ITEMS.map((item, index) => {
+          const isAuth =
+            authContext &&
+            authContext.authData &&
+            authContext.authData.authUser;
+          const menuItem = (
+            <ListItem key={item.title} disablePadding>
+              <ListItemButton
+                to={item.path}
+                component={Link}
+                onClick={toggleDrawer(false)}
+                onKeyDown={toggleDrawer(false)}
+              >
+                <ListItemIcon>{item.icon}</ListItemIcon>
+                <ListItemText primary={item.title} />
+              </ListItemButton>
+            </ListItem>
+          );
+          if (isAuth) {
+            if (item.type === "auth") {
+              return menuItem;
+            }
+          } else {
+            if (item.type === "non_auth") {
+              return menuItem;
+            }
+          }
+          return <Box />;
+        })}
       </List>
       <Divider />
       <List>
@@ -106,32 +164,7 @@ function Header() {
               </Typography>
             </Button>
             <Divider flexItem orientation="vertical" sx={{ mx: 0.5, my: 1 }} />
-            <Button
-              sx={{ marginLeft: "auto", marginRight: 0 }}
-              id="basic-button"
-              aria-controls={configOpen ? "basic-menu" : undefined}
-              aria-haspopup="true"
-              aria-expanded={configOpen ? "true" : undefined}
-              onClick={handleConfigClick}
-              className="right-btn-area"
-            >
-              <SettingsIcon />
-            </Button>
-            <Menu
-              id="basic-menu"
-              anchorEl={configAnchorEl}
-              open={configOpen}
-              onClose={handleConfigClose}
-              MenuListProps={{
-                "aria-labelledby": "basic-button",
-              }}
-            >
-              <MenuItem onClick={handleConfigClose}>
-                <Button to="/setting-file" component={Link}>
-                  About Setting File
-                </Button>
-              </MenuItem>
-            </Menu>
+            {authMenu()}
           </Toolbar>
         </AppBar>
       </Box>

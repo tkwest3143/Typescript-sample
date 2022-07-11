@@ -8,7 +8,7 @@ export class LoginService {
 
     return {
       user_id: userResponse.user_id,
-      username: userResponse.user_id,
+      username: userResponse.username,
       password: userResponse.password,
       email: userResponse.email,
     };
