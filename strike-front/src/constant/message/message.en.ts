@@ -12,6 +12,7 @@ export const message_en = {
     refarence: 'Refarence',
     clear: 'Clear',
     send: 'Send',
+    post_date: 'Post date',
   },
   alert: {
     not_selected_file: 'Please select at least one file',

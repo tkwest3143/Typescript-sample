@@ -1,10 +1,13 @@
 import axios, { AxiosRequestHeaders } from 'axios';
-import { RegisterData, LoginData, UploadData } from '../data/request';
+import { ApplicationProperty } from '../../constant';
+import { RegisterData, LoginData } from '../data/request';
+import { GetNewsData } from '../data/request/newsData';
 import { LoginResponse } from '../data/response';
+import { NewsResponse } from '../data/response/NewsResponse';
 import { SuccesResponse } from '../data/response/SuccessResponse';
 import { ServerConstant } from '../serverConstant';
 
-const SERVER_DOMAIN = 'http://192.168.50.251:8080';
+const SERVER_DOMAIN = ApplicationProperty.serverUrl;
 
 export default class ServerAccessr {
   private async request<BODY, RESPONSE>(
@@ -62,6 +65,18 @@ export default class ServerAccessr {
       SERVER_DOMAIN + ServerConstant.Upload.url,
       data,
       headers
+    );
+  }
+
+  async getNewsData(userId: string): Promise<NewsResponse> {
+    const body: GetNewsData = {
+      user_id: userId,
+    };
+
+    return await this.request<GetNewsData, NewsResponse>(
+      ServerConstant.GetNewsData.method,
+      SERVER_DOMAIN + ServerConstant.GetNewsData.url,
+      body
     );
   }
 }

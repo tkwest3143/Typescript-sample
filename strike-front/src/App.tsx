@@ -7,9 +7,11 @@ import { useState } from "react";
 import { AuthModel } from "./web/auth/authModel";
 
 function App() {
+  const cuurentMode =
+    window.matchMedia("(prefers-color-scheme: dark)").matches === true;
   const darkTheme = createTheme({
     palette: {
-      mode: "dark",
+      mode: cuurentMode ? "dark" : "light",
     },
   });
 

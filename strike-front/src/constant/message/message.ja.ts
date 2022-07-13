@@ -12,6 +12,7 @@ export const message_ja = {
     refarence: '参照',
     clear: 'クリア',
     send: '送信',
+    post_date: '投稿日時',
   },
   alert: {
     not_selected_file: '少なくとも1つ以上のファイルを選択してください',

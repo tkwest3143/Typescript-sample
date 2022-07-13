@@ -16,8 +16,6 @@ import {
 } from "@mui/material";
 import {
   Login as LoginIcon,
-  MoveToInbox as InboxIcon,
-  Mail as MailIcon,
   Close as CloseIcon,
   DensityMediumSharp as DensityMediumSharpIcon,
   Settings as SettingsIcon,
@@ -25,7 +23,7 @@ import {
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { application_name, MENU_ITEMS } from "../../../constant";
+import { ApplicationProperty, MENU_ITEMS } from "../../../constant";
 import { AuthContext } from "../../auth/auth";
 
 function Header() {
@@ -150,7 +148,7 @@ function Header() {
   return (
     <div>
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static" color="primary">
+        <AppBar position="static">
           <Toolbar>
             <Button onClick={toggleDrawer(true)}>
               <DensityMediumSharpIcon />
@@ -160,7 +158,7 @@ function Header() {
             </Drawer>
             <Button variant="text" aria-label="Home" to="/" component={Link}>
               <Typography variant="h4" component="h3">
-                {application_name}
+                {ApplicationProperty.applicationName}
               </Typography>
             </Button>
             <Divider flexItem orientation="vertical" sx={{ mx: 0.5, my: 1 }} />

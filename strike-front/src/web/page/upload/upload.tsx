@@ -36,7 +36,7 @@ function Upload() {
   };
 
   const onSendClick = () => {
-    if (!files || files.length == 0) {
+    if (!files || files.length === 0) {
       alert(MessageService.Messages.alert.not_selected_file);
       return;
     }

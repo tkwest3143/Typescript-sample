@@ -46,7 +46,7 @@ function Login() {
     model.authUser = userModel;
     authModel.setAuthData(model);
 
-    navigate("/register");
+    navigate("/top");
   };
   return (
     <div>
@@ -67,14 +67,19 @@ function Login() {
           </Typography>
           <Box component="form" noValidate sx={{ mt: 1 }}>
             <TextField
+              fullWidth
               required
+              margin="normal"
               id="username"
               label="username"
               value={form.username}
               onChange={(event) => handleChangeUsername(event.target.value)}
+              autoFocus
             />
             <TextField
+              fullWidth
               required
+              margin="normal"
               id="password"
               type="password"
               label="password"

@@ -11,4 +11,8 @@ export const ServerConstant = {
     url: '/upload',
     method: 'post',
   },
+  GetNewsData: {
+    url: '/getNewsList',
+    method: 'get',
+  },
 };

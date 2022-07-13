@@ -48,6 +48,7 @@ function Register() {
       </Box>
       <TextField
         required
+        fullWidth
         id="username"
         label="username"
         value={form.username}
@@ -55,6 +56,7 @@ function Register() {
       />
       <TextField
         required
+        fullWidth
         id="password"
         type="password"
         label="password"
