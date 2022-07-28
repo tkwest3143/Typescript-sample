@@ -45,7 +45,7 @@ function Upload() {
   return (
     <div>
       <Box color="primary">
-        <h2>{MessageService.Messages.menu.file_upload}</h2>
+        <h2>{MessageService.Messages.title.file_upload}</h2>
       </Box>
       <TextField
         disabled

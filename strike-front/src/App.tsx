@@ -15,7 +15,7 @@ function App() {
     },
   });
 
-  const [authData, setAuthData] = useState<AuthModel | null>(null);
+  const [authData, setAuthData] = useState<AuthModel>(new AuthModel());
   const value = {
     authData,
     setAuthData,

@@ -5,4 +5,10 @@ export class NewsService {
   async getNewsData(userId: string) {
     return this.accesser.getNewsData(userId);
   }
+  async getNewsByCategory(categoryId: string) {
+    return this.accesser.getNewsByCaegory(categoryId);
+  }
+  async getNewsCategory() {
+    return this.accesser.getNewsCategory();
+  }
 }

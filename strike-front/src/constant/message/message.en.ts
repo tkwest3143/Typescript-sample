@@ -1,9 +1,24 @@
 export const message_en = {
   welcome: 'Welcome',
-  menu: {
+  title: {
     file_upload: 'File Upload',
     login: 'Login',
     register: 'Register',
+    news: 'News',
+    calendar: 'Calendar',
+    setting: 'app setting',
+    profile: 'profile',
+  },
+  news_category: {
+    domestic: 'domestic',
+    world: 'world',
+    business: 'business',
+    entertainment: 'entertainment',
+    sports: 'sports',
+    it: 'it',
+    science: 'science',
+    life: 'life',
+    local: 'local',
   },
   text: {
     login: 'Login',
@@ -13,8 +28,21 @@ export const message_en = {
     clear: 'Clear',
     send: 'Send',
     post_date: 'Post date',
+    learn_more: 'learn more',
+    update: 'update',
   },
   alert: {
     not_selected_file: 'Please select at least one file',
+    registration_failure: 'Registration failed. Please try again.',
+    detail: 'detail',
+  },
+  week: {
+    sun: 'sun',
+    mon: 'mon',
+    tue: 'tue',
+    wed: 'wed',
+    thu: 'thu',
+    fri: 'fri',
+    sat: 'sat',
   },
 };

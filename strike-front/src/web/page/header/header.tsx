@@ -4,7 +4,6 @@ import {
   Button,
   Divider,
   Drawer,
-  List,
   ListItem,
   ListItemButton,
   ListItemIcon,
@@ -18,33 +17,39 @@ import {
   Login as LoginIcon,
   Close as CloseIcon,
   DensityMediumSharp as DensityMediumSharpIcon,
-  Settings as SettingsIcon,
 } from "@mui/icons-material";
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { ApplicationProperty, MENU_ITEMS } from "../../../constant";
+import {
+  ApplicationProperty,
+  MENU_ITEMS,
+  SETTING_MENU_ITEMS,
+} from "../../../constant";
 import { AuthContext } from "../../auth/auth";
+import MenuList from "./item/menuList";
 
+type HeaderState = {
+  configAnchorEl: null | HTMLElement;
+  drawerOpen: boolean;
+};
 function Header() {
   const authContext = useContext(AuthContext);
-  const [configAnchorEl, setConfigAnchorEl] = useState<null | HTMLElement>(
-    null
-  );
-  const configOpen = Boolean(configAnchorEl);
+  const [state, setState] = useState<HeaderState>({
+    configAnchorEl: null,
+    drawerOpen: false,
+  });
+  const configOpen = Boolean(state.configAnchorEl);
   const handleConfigClick = (event: React.MouseEvent<HTMLElement>) => {
-    setConfigAnchorEl(event.currentTarget);
+    setState({ ...state, configAnchorEl: event.currentTarget });
   };
   const handleConfigClose = () => {
-    setConfigAnchorEl(null);
+    setState({ ...state, configAnchorEl: null });
   };
 
-  const [state, setState] = useState({
-    open: false,
-  });
-
   const toggleDrawer =
-    (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
+    (drawerOpen: boolean) =>
+    (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
         event.type === "keydown" &&
         ((event as React.KeyboardEvent).key === "Tab" ||
@@ -53,10 +58,11 @@ function Header() {
         return;
       }
 
-      setState({ ...state, open });
+      setState({ ...state, drawerOpen });
     };
+
   const authMenu = () => {
-    if (authContext && authContext.authData && authContext.authData.authUser) {
+    if (authContext.authData.authUser) {
       return (
         <Box sx={{ marginLeft: "auto", marginRight: 0 }}>
           <Button
@@ -66,12 +72,13 @@ function Header() {
             aria-expanded={configOpen ? "true" : undefined}
             onClick={handleConfigClick}
             className="right-btn-area"
+            color="inherit"
           >
             {authContext.authData.authUser.username}
           </Button>
           <Menu
             id="basic-menu"
-            anchorEl={configAnchorEl}
+            anchorEl={state.configAnchorEl}
             open={configOpen}
             onClose={handleConfigClose}
             MenuListProps={{
@@ -79,9 +86,12 @@ function Header() {
             }}
           >
             <MenuItem onClick={handleConfigClose}>
-              <Button to="/setting-file" component={Link}>
-                <SettingsIcon />
-              </Button>
+              <MenuList
+                menuitems={SETTING_MENU_ITEMS}
+                isAuth={authContext.authData.isAuth()}
+                openOrCloseClick={toggleDrawer(false)}
+                openOrCloseKeyDown={toggleDrawer(false)}
+              />
             </MenuItem>
           </Menu>
         </Box>
@@ -89,60 +99,33 @@ function Header() {
     }
     return (
       <Box sx={{ marginLeft: "auto", marginRight: 0 }}>
-        <Button to="/login" component={Link}>
+        <Button to="/login" component={Link} color="inherit">
           <LoginIcon />
         </Button>
       </Box>
     );
   };
 
-  const list = () => (
+  const menuList = () => (
     <Box sx={{ width: 250 }} role="presentation">
-      <List>
-        {MENU_ITEMS.map((item, index) => {
-          const isAuth =
-            authContext &&
-            authContext.authData &&
-            authContext.authData.authUser;
-          const menuItem = (
-            <ListItem key={item.title} disablePadding>
-              <ListItemButton
-                to={item.path}
-                component={Link}
-                onClick={toggleDrawer(false)}
-                onKeyDown={toggleDrawer(false)}
-              >
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.title} />
-              </ListItemButton>
-            </ListItem>
-          );
-          if (isAuth) {
-            if (item.type === "auth") {
-              return menuItem;
-            }
-          } else {
-            if (item.type === "non_auth") {
-              return menuItem;
-            }
-          }
-          return <Box />;
-        })}
-      </List>
+      <MenuList
+        menuitems={MENU_ITEMS}
+        isAuth={authContext.authData.isAuth()}
+        openOrCloseClick={toggleDrawer(false)}
+        openOrCloseKeyDown={toggleDrawer(false)}
+      />
       <Divider />
-      <List>
-        <ListItem disablePadding>
-          <ListItemButton
-            onClick={toggleDrawer(false)}
-            onKeyDown={toggleDrawer(false)}
-          >
-            <ListItemIcon>
-              <CloseIcon />
-            </ListItemIcon>
-            <ListItemText primary="Close" />
-          </ListItemButton>
-        </ListItem>
-      </List>
+      <ListItem disablePadding>
+        <ListItemButton
+          onClick={toggleDrawer(false)}
+          onKeyDown={toggleDrawer(false)}
+        >
+          <ListItemIcon>
+            <CloseIcon />
+          </ListItemIcon>
+          <ListItemText primary="Close" />
+        </ListItemButton>
+      </ListItem>
     </Box>
   );
   return (
@@ -150,13 +133,19 @@ function Header() {
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>
-            <Button onClick={toggleDrawer(true)}>
+            <Button onClick={toggleDrawer(true)} color="inherit">
               <DensityMediumSharpIcon />
             </Button>
-            <Drawer open={state["open"]} onClose={toggleDrawer(false)}>
-              {list()}
+            <Drawer open={state.drawerOpen} onClose={toggleDrawer(false)}>
+              {menuList()}
             </Drawer>
-            <Button variant="text" aria-label="Home" to="/" component={Link}>
+            <Button
+              variant="text"
+              aria-label="Home"
+              to={authContext.authData.isAuth() ? "/top" : "/login"}
+              component={Link}
+              color="inherit"
+            >
               <Typography variant="h4" component="h3">
                 {ApplicationProperty.applicationName}
               </Typography>

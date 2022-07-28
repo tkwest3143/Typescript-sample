@@ -1,11 +1,11 @@
 import { createContext, useContext } from "react";
-import { Navigate, Route, RouteProps } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { AuthModel } from "./authModel";
 
 export const AuthContext = createContext<{
-  authData: AuthModel | null;
-  setAuthData: React.Dispatch<React.SetStateAction<AuthModel | null>>;
-}>({ authData: null, setAuthData: () => {} });
+  authData: AuthModel;
+  setAuthData: React.Dispatch<React.SetStateAction<AuthModel>>;
+}>({ authData: new AuthModel(), setAuthData: () => {} });
 
 export const AuthRoute: React.FC<{ element: JSX.Element }> = ({ ...props }) => {
   const authUser = useContext(AuthContext);

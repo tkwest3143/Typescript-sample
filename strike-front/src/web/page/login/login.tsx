@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { LockOutlined as LockOutlinedIcon } from "@mui/icons-material";
 import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../auth/auth";
 import { AuthModel } from "../../auth/authModel";
 import { LoginService } from "../../service/loginService";
@@ -16,7 +16,7 @@ import MessageService from "../../service/messageService";
 
 function Login() {
   const authModel = useContext(AuthContext);
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const [form, setForm] = useState<LoginForm>({
     username: "",
     password: "",
@@ -63,7 +63,7 @@ function Login() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            <h2>{MessageService.Messages.menu.login}</h2>
+            <h2>{MessageService.Messages.title.login}</h2>
           </Typography>
           <Box component="form" noValidate sx={{ mt: 1 }}>
             <TextField
@@ -89,6 +89,11 @@ function Login() {
             <Box>
               <Button onClick={handleLoginClick}>
                 {MessageService.Messages.text.login}
+              </Button>
+              <Button>
+                <Link to="/register">
+                  {MessageService.Messages.text.register}
+                </Link>
               </Button>
             </Box>
           </Box>

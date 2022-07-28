@@ -1,9 +1,24 @@
 export const message_ja = {
   welcome: 'ようこそ',
-  menu: {
+  title: {
     file_upload: 'ファイルアップロード',
     login: 'ログイン',
     register: '登録',
+    news: 'ニュース',
+    calendar: 'カレンダー',
+    setting: 'アプリ設定',
+    profile: 'プロフィール',
+  },
+  news_category: {
+    domestic: '国内',
+    world: '国際',
+    business: '経済',
+    entertainment: 'エンタメ',
+    sports: 'スポーツ',
+    it: 'it',
+    science: '科学',
+    life: 'ライフ',
+    local: '地域',
   },
   text: {
     login: 'ログイン',
@@ -13,8 +28,21 @@ export const message_ja = {
     clear: 'クリア',
     send: '送信',
     post_date: '投稿日時',
+    learn_more: '続きを見る',
+    update: '更新',
   },
   alert: {
     not_selected_file: '少なくとも1つ以上のファイルを選択してください',
+    registration_failure: '登録に失敗しました。再度登録処理を行ってください',
+    detail: '詳細',
+  },
+  week: {
+    sun: '日',
+    mon: '月',
+    tue: '火',
+    wed: '水',
+    thu: '木',
+    fri: '金',
+    sat: '土',
   },
 };

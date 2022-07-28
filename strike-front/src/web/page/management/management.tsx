@@ -1,15 +1,19 @@
-import { Box, Typography } from "@mui/material";
+import { FormGroup } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
-import MessageService from "../../service/messageService";
+import { NewsService } from "../../service/news/newsService";
 import { AuthContext } from "../../auth/auth";
 import { useNavigate } from "react-router-dom";
-function Top() {
+import { NewsCategoryModel } from "../../model/newsCategoryModel";
+import Calendar from "./calendar";
+function Management() {
   const authContext = useContext(AuthContext);
+  const [newsCategory, setNewsCategory] = useState<NewsCategoryModel[]>([]);
   const [user, setUser] = useState<{ userId: string; username: string }>({
     userId: "",
     username: "",
   });
   const navigate = useNavigate();
+  const newsService = new NewsService();
 
   useEffect(() => {
     if (!authContext.authData || !authContext.authData.authUser) {
@@ -20,17 +24,21 @@ function Top() {
       userId: authContext.authData.authUser.user_id,
       username: authContext.authData.authUser.username,
     });
+    setCategory();
   }, []);
+  const setCategory = async () => {
+    const categoryRes = await newsService.getNewsCategory();
+    console.log(categoryRes);
+    setNewsCategory(categoryRes.news_category);
+  };
 
   return (
     <div>
-      <Box color="primary" sx={{ display: "inline-flex" }}>
-        <Typography gutterBottom variant="h5" component="div">
-          {MessageService.Messages.welcome} {user.username}{" "}
-        </Typography>
-      </Box>
+      <FormGroup>
+        <Calendar year={2022} month={7} />
+      </FormGroup>
     </div>
   );
 }
 
-export default Top;
+export default Management;

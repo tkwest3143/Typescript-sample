@@ -1,9 +1,20 @@
-import { Box, Button, TextField } from "@mui/material";
-import { useState } from "react";
+import {
+  Avatar,
+  Box,
+  Button,
+  Container,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { useContext, useState } from "react";
 import MessageService from "../../service/messageService";
 import { RegisterService } from "../../service/registerService";
-
+import { AppRegistration as AppRegistrationIcon } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../auth/auth";
 function Register() {
+  const authModel = useContext(AuthContext);
+  const navigate = useNavigate();
   const [form, setForm] = useState<RegisterForm>({
     username: "",
     password: "",
@@ -38,44 +49,76 @@ function Register() {
       mail_addresss: val,
     });
   };
-  const handleLoginClick = () => {
-    service.doRegister(form.username, form.password, form.mail_addresss);
+  const handleRegisterClick = async () => {
+    try {
+      await service.doRegister(
+        form.username,
+        form.password,
+        form.mail_addresss
+      );
+    } catch (e) {
+      alert(`${MessageService.Messages.alert.registration_failure}`);
+      return;
+    }
+
+    navigate("/login");
   };
   return (
     <div>
-      <Box color="primary">
-        <h2>{MessageService.Messages.menu.register}</h2>
-      </Box>
-      <TextField
-        required
-        fullWidth
-        id="username"
-        label="username"
-        value={form.username}
-        onChange={(event) => handleChangeUsername(event.target.value)}
-      />
-      <TextField
-        required
-        fullWidth
-        id="password"
-        type="password"
-        label="password"
-        value={form.password}
-        onChange={(event) => handleChangePassword(event.target.value)}
-      />
-      <TextField
-        required
-        id="email"
-        type="email"
-        label="email"
-        value={form.mail_addresss}
-        onChange={(event) => handleChangeMailAddress(event.target.value)}
-      />
-      <Box>
-        <Button onClick={handleLoginClick}>
-          {MessageService.Messages.text.register}
-        </Button>
-      </Box>
+      <Container component="main" maxWidth="xs">
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <AppRegistrationIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            <h2>{MessageService.Messages.title.register}</h2>
+          </Typography>
+          <Box component="form" noValidate sx={{ mt: 1 }}>
+            <TextField
+              fullWidth
+              required
+              margin="normal"
+              id="username"
+              label="username"
+              value={form.username}
+              onChange={(event) => handleChangeUsername(event.target.value)}
+              autoFocus
+            />
+            <TextField
+              fullWidth
+              required
+              margin="normal"
+              id="password"
+              type="password"
+              label="password"
+              value={form.password}
+              onChange={(event) => handleChangePassword(event.target.value)}
+            />
+            <TextField
+              fullWidth
+              required
+              margin="normal"
+              id="email"
+              type="email"
+              label="email"
+              value={form.mail_addresss}
+              onChange={(event) => handleChangeMailAddress(event.target.value)}
+            />
+            <Box>
+              <Button onClick={handleRegisterClick}>
+                {MessageService.Messages.text.register}
+              </Button>
+            </Box>
+          </Box>
+        </Box>
+      </Container>
     </div>
   );
 }

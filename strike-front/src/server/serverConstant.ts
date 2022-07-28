@@ -13,6 +13,14 @@ export const ServerConstant = {
   },
   GetNewsData: {
     url: '/getNewsList',
-    method: 'get',
+    method: 'POST',
+  },
+  GetNewsByCategory: {
+    url: '/getNewsByCategory',
+    method: 'post',
+  },
+  GetNewsCategory: {
+    url: '/getNewsCategory',
+    method: 'post',
   },
 };

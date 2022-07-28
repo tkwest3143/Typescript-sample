@@ -10,4 +10,17 @@ export default class MessageService {
       return message_en;
     }
   }
+
+  static NewsCategory(category: string) {
+    const lang = window.navigator.language;
+    if (lang === 'ja') {
+      return message_ja.news_category[
+        category as keyof typeof message_ja.news_category
+      ];
+    } else {
+      return message_en.news_category[
+        category as keyof typeof message_ja.news_category
+      ];
+    }
+  }
 }

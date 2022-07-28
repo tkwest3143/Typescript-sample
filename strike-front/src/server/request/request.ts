@@ -1,10 +1,17 @@
 import axios, { AxiosRequestHeaders } from 'axios';
 import { ApplicationProperty } from '../../constant';
-import { RegisterData, LoginData } from '../data/request';
-import { GetNewsData } from '../data/request/newsData';
-import { LoginResponse } from '../data/response';
-import { NewsResponse } from '../data/response/NewsResponse';
-import { SuccesResponse } from '../data/response/SuccessResponse';
+import {
+  RegisterData,
+  LoginData,
+  GetNewsData,
+  GetNewsByCategoryData,
+} from '../data/request';
+import {
+  LoginResponse,
+  NewsCategoryResponse,
+  NewsResponse,
+  SuccesResponse,
+} from '../data/response';
 import { ServerConstant } from '../serverConstant';
 
 const SERVER_DOMAIN = ApplicationProperty.serverUrl;
@@ -13,7 +20,7 @@ export default class ServerAccessr {
   private async request<BODY, RESPONSE>(
     method: string,
     url: string,
-    body: BODY,
+    body?: BODY,
     headers?: AxiosRequestHeaders
   ): Promise<RESPONSE> {
     return await axios
@@ -22,7 +29,7 @@ export default class ServerAccessr {
         return res.data as RESPONSE;
       })
       .catch((error) => {
-        throw error;
+        throw new Error(error.message);
       });
   }
   async doLogin(username: string, password: string): Promise<LoginResponse> {
@@ -77,6 +84,23 @@ export default class ServerAccessr {
       ServerConstant.GetNewsData.method,
       SERVER_DOMAIN + ServerConstant.GetNewsData.url,
       body
+    );
+  }
+  async getNewsByCaegory(categoryId: string): Promise<NewsResponse> {
+    const body: GetNewsByCategoryData = {
+      category_id: categoryId,
+    };
+
+    return await this.request<GetNewsByCategoryData, NewsResponse>(
+      ServerConstant.GetNewsByCategory.method,
+      SERVER_DOMAIN + ServerConstant.GetNewsByCategory.url,
+      body
+    );
+  }
+  async getNewsCategory(): Promise<NewsCategoryResponse> {
+    return await this.request<null, NewsCategoryResponse>(
+      ServerConstant.GetNewsCategory.method,
+      SERVER_DOMAIN + ServerConstant.GetNewsCategory.url
     );
   }
 }
