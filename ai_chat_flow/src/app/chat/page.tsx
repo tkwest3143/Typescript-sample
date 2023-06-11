@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 
-// Define a type for messages
 type Message = {
   userId: number;
   text: string;
@@ -14,11 +13,9 @@ export default function Home() {
     e.preventDefault();
 
     if (input !== "") {
-      const currentMessage = messages;
-      currentMessage.push({ userId: 0, text: input });
-      setMessages(currentMessage);
-      console.log(messages);
-      const result = fetch(`/api/gpt`, {
+      messages.push({ userId: 0, text: input });
+      setMessages([...messages]);
+      fetch(`/api/gpt`, {
         method: "POST",
         headers: {
           "content-type": "application/json;charset=UTF-8",
@@ -28,14 +25,12 @@ export default function Home() {
         }),
       }).then(async (data) => {
         const result = await data.json();
-        currentMessage.push({
+        messages.push({
           userId: 1,
           text: result.result || "sorry not response gpt",
         });
-        setMessages(currentMessage);
-        console.log(messages);
+        setMessages([...messages]);
       });
-
       setInput("");
     }
   };
